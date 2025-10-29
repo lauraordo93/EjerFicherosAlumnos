@@ -16,6 +16,7 @@ public class FicheroJson {
     Tu clase FicheroJson depende de un objeto Gson para hacer su trabajo.
     * */
     //NO HE CREADO EL CONSTRUCTOR
+    //poniendole la linea GsonBuilder().setPrettyPrinting().create() general el formato json para que se vea "Bonito"
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /* SI CREARA EL CONSTRUCTOR:
