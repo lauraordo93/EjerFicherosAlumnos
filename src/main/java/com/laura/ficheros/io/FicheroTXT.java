@@ -10,7 +10,7 @@ public class FicheroTXT {
 
     public void guardarAlumnos(ListaAlumnos lista) {
         File archivo = configuracionRutas.archivoTxt;
-        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo, true))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(archivo))) {
             //para cada Alumno alumno(objeto temporal) que haya dentro de lista.getAlumnos()
             for (Alumno alumno : lista.getAlumnos())
                 // .println() hace el trabajo de .write() + .newLine() en un solo paso

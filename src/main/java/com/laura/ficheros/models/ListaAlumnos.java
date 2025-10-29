@@ -8,7 +8,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-@XmlAccessorType(XmlAccessType.FIELD) //Usa todos los campos directamente
+//@XmlAccessorType(XmlAccessType.FIELD) //Usa todos los campos directamente
 @XmlRootElement(name = "Aula")
 public class ListaAlumnos implements Serializable {
     private List<Alumno> alumnos = new ArrayList<>();

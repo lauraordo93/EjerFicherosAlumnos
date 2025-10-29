@@ -1,9 +1,7 @@
 package com.laura.ficheros;
 
-import com.laura.ficheros.io.FicheroBinario;
-import com.laura.ficheros.io.FicheroCSV;
-import com.laura.ficheros.io.FicheroTXT;
-import com.laura.ficheros.io.FicheroXML;
+import com.laura.ficheros.io.*;
+import com.laura.ficheros.models.Alumno;
 import com.laura.ficheros.models.ListaAlumnos;
 
 import static com.laura.ficheros.io.configuracionRutas.sr;
@@ -27,9 +25,26 @@ public class App {
         FicheroXML gestorXML = new FicheroXML();
         FicheroCSV gestorCSV = new FicheroCSV();
         FicheroTXT gestorTXT = new FicheroTXT();
+        FicheroJson gestorJson = new FicheroJson();
+
+        /* PARA UTILIZAR LA LIBRERIA GSON HAY 2 OPCIONES Si creo el constructor dentro de la clase:
+        * 1. Crea la configuración de Gson que quieres usar
+          Gson configuracionGson = new GsonBuilder().setPrettyPrinting().create();
+
+        * 2. Inyecta esa configuración al crear el gestor
+          FicheroJson gestorJson = new FicheroJson(configuracionGson); // 👈 ¡Aquí están los parámetros!
+         */
+
+
+
         // --- 2. EL VASO (La lista en MEMORIA) ---
         //    (Cargamos desde XML por defecto, por ejemplo)
-        System.out.println("Cargando datos iniciales desde XML...");
+        System.out.println("Cargando datos iniciales...");
+
+
+
+
+
 
         // --- 2. PREPARACIÓN (El Jefe coge su "Vaso") ---
         //    (Vamos a empezar con un vaso vacío esta vez, es más simple)
@@ -42,28 +57,31 @@ public class App {
             System.out.println("\n--- GESTOR DE ALUMNOS ---");
             System.out.println("¿Con qué formato de fichero quieres trabajar?");
             System.out.println("1. Ficheros TXT (.txt)");
-            System.out.println("2. Ficheros CSV (.csv)");
+            System.out.println("2. Ficheros CSV (.csv)");//Falta
             System.out.println("3. Ficheros XML (.xml)");
             System.out.println("4. Ficheros Binarios (.dat)");
-            System.out.println("5. Salir");
+            System.out.println("5. Ficheros Json (.json)");//Falta
+            System.out.println("6. Salir");
 
             //Declaramos variable opcion para que el usuario pueda elegir
             opcion = sr.nextLine().trim().toLowerCase();
             switch (opcion) {
                 case "1":
-                  // gestorTXT.guardarAlumnos();
-                    break;
+                    misAlumnos = gestionarTXT(misAlumnos, gestorTXT);
                 case "2":
 
                     break;
                 case "3":
 
-
+                    misAlumnos = gestionarXML(misAlumnos, gestorXML);
                     break;
                 case "4":
-
+                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario);
                     break;
                 case "5":
+                    misAlumnos = gestionarJson(misAlumnos, gestorJson);
+                    break;
+                case "6":
                     salir = true;
                     break;
             }
@@ -97,12 +115,17 @@ public class App {
 
             opcionSubMenu = sr.nextLine().trim();
 
+
             switch (opcionSubMenu) {
                 case "1":
-                    // 1. Pides los datos
-                    // ... (lógica para pedir datos) ...
-                    // 2. Creas el alumno
-                    // Alumno nuevo = new Alumno(nombre, ...);
+                    System.out.println("Inserta Nombre alumno: ");
+                    String nombre = sr.nextLine();
+                    System.out.println("Inserta Apellidos alumno: ");
+                    String apellidos = sr.nextLine();
+                    System.out.println("Inserta número de expediente alumno: ");
+                    int expediente = sr.nextInt();
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    lista.agregarAlumno(alumnoNuevo);
                     // 3. Lo añades al "Vaso" (la lista en memoria)
                     // lista.add(nuevo);
                     System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
@@ -125,9 +148,172 @@ public class App {
                 case "5":
                     System.out.println("Volviendo al menú principal...");
                     break;
-                default:
-                    System.out.println("Opción no válida.");
+
+            }
+
+        } while (!opcionSubMenu.equals("5"));
+
+        // Devuelve la lista (actualizada o recargada) al Main
+        return lista;
+    }
+
+    public static ListaAlumnos gestionarXML(ListaAlumnos lista, FicheroXML gestor) {
+        String opcionSubMenu = "";
+
+        do {
+            System.out.println("\n--- MODO XML ---");
+            System.out.println("1. Añadir Alumno (a la memoria)");
+            System.out.println("2. Listar Alumnos (de la memoria)");
+            System.out.println("3. Guardar cambios en XML (Almacén)");
+            System.out.println("4. Cargar datos desde XML (Almacén)");
+            System.out.println("5. Volver al menú principal");
+
+            opcionSubMenu = sr.nextLine().trim();
+
+
+            switch (opcionSubMenu) {
+                case "1":
+                    System.out.println("Inserta Nombre alumno: ");
+                    String nombre = sr.nextLine();
+                    System.out.println("Inserta Apellidos alumno: ");
+                    String apellidos = sr.nextLine();
+                    System.out.println("Inserta número de expediente alumno: ");
+                    int expediente = sr.nextInt();
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    lista.agregarAlumno(alumnoNuevo);
+                    // 3. Lo añades al "Vaso" (la lista en memoria)
+                    // lista.add(nuevo);
+                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
                     break;
+                case "2":
+                    // Miras el "Vaso"
+                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
+                    break;
+                case "3":
+                    // Le das el "Vaso" al "Especialista"
+                    System.out.println("Guardando en XML...");
+                    gestor.guardarAlumnos(lista);
+                    break;
+                case "4":
+                    // Reemplazas el "Vaso"
+                    System.out.println("Cargando desde XML...");
+                    lista = gestor.leerAlumnos();
+                    System.out.println("¡Datos cargados desde XML!");
+                    break;
+                case "5":
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+            }
+
+        } while (!opcionSubMenu.equals("5"));
+
+        // Devuelve la lista (actualizada o recargada) al Main
+        return lista;
+    }
+
+    public static ListaAlumnos gestionarBinario(ListaAlumnos lista, FicheroBinario gestor) {
+        String opcionSubMenu = "";
+
+        do {
+            System.out.println("\n--- MODO BINARIO ---");
+            System.out.println("1. Añadir Alumno (a la memoria)");
+            System.out.println("2. Listar Alumnos (de la memoria)");
+            System.out.println("3. Guardar cambios en BINARIO (Almacén)");
+            System.out.println("4. Cargar datos desde BINARIO (Almacén)");
+            System.out.println("5. Volver al menú principal");
+
+            opcionSubMenu = sr.nextLine().trim();
+
+
+            switch (opcionSubMenu) {
+                case "1":
+                    System.out.println("Inserta Nombre alumno: ");
+                    String nombre = sr.nextLine();
+                    System.out.println("Inserta Apellidos alumno: ");
+                    String apellidos = sr.nextLine();
+                    System.out.println("Inserta número de expediente alumno: ");
+                    int expediente = sr.nextInt();
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    lista.agregarAlumno(alumnoNuevo);
+                    // 3. Lo añades al "Vaso" (la lista en memoria)
+                    // lista.add(nuevo);
+                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
+                    break;
+                case "2":
+                    // Miras el "Vaso"
+                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
+                    break;
+                case "3":
+                    // Le das el "Vaso" al "Especialista"
+                    System.out.println("Guardando en BINARIO...");
+                    gestor.guardarAlumnos(lista);
+                    break;
+                case "4":
+                    // Reemplazas el "Vaso"
+                    System.out.println("Cargando desde BINARIO...");
+                    lista = gestor.leerAlumnos();
+                    System.out.println("¡Datos cargados desde BINARIO!");
+                    break;
+                case "5":
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+            }
+
+        } while (!opcionSubMenu.equals("5"));
+
+        // Devuelve la lista (actualizada o recargada) al Main
+        return lista;
+    }
+
+    public static ListaAlumnos gestionarJson(ListaAlumnos lista, FicheroJson gestor) {
+        String opcionSubMenu = "";
+
+        do {
+            System.out.println("\n--- MODO JSON ---");
+            System.out.println("1. Añadir Alumno (a la memoria)");
+            System.out.println("2. Listar Alumnos (de la memoria)");
+            System.out.println("3. Guardar cambios en Json (Almacén)");
+            System.out.println("4. Cargar datos desde Json (Almacén)");
+            System.out.println("5. Volver al menú principal");
+
+            opcionSubMenu = sr.nextLine().trim();
+
+
+            switch (opcionSubMenu) {
+                case "1":
+                    System.out.println("Inserta Nombre alumno: ");
+                    String nombre = sr.nextLine();
+                    System.out.println("Inserta Apellidos alumno: ");
+                    String apellidos = sr.nextLine();
+                    System.out.println("Inserta número de expediente alumno: ");
+                    int expediente = sr.nextInt();
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    lista.agregarAlumno(alumnoNuevo);
+                    // 3. Lo añades al "Vaso" (la lista en memoria)
+                    // lista.add(nuevo);
+                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
+                    break;
+                case "2":
+                    // Miras el "Vaso"
+                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
+                    break;
+                case "3":
+                    // Le das el "Vaso" al "Especialista"
+                    System.out.println("Guardando en Json...");
+                    gestor.guardarAlumnos(lista);
+                    break;
+                case "4":
+                    // Reemplazas el "Vaso"
+                    System.out.println("Cargando desde Json...");
+                    lista = gestor.leerAlumnos();
+                    System.out.println("¡Datos cargados desde Json!");
+                    break;
+                case "5":
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
             }
 
         } while (!opcionSubMenu.equals("5"));
