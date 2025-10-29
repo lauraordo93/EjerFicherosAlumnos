@@ -27,23 +27,22 @@ EjerFicherosAlumnos/
 │
 ├── pom.xml
 └── .gitignore
-
-
+```
 ## ⚙️ Funcionalidades principales
 
 - 📄 **Lectura y escritura en diferentes formatos:**
-  - TXT
-  - CSV
-  - Binario
-  - XML
-  - en desarrollo Json
+  - TXT  
+  - CSV  
+  - Binario  
+  - XML  
+  - *(En desarrollo: JSON)*
 
 - 👨‍🎓 **Gestión de alumnos:**
-  - Alta, modificación y listado.
-  - Almacenamiento persistente en los ficheros.
+  - Alta, modificación y listado  
+  - Almacenamiento persistente en los ficheros
 
 - 🔧 **Configuración flexible:**
-  - Rutas de ficheros configurables desde `configuracionRutas.java`.
+  - Rutas de ficheros configurables desde `configuracionRutas.java`
 
 ---
 
@@ -59,5 +58,7 @@ EjerFicherosAlumnos/
 ## 🚀 Ejecución del proyecto
 
 1. Clonar el repositorio:
-   ```bash
+   ```bash``
    git clone https://github.com/lauraordo93/EjerFicherosAlumnos.git
+
+
