@@ -58,7 +58,7 @@ EjerFicherosAlumnos/
 ## 🚀 Ejecución del proyecto
 
 1. Clonar el repositorio:
-   ```bash``
+   ```bash```
    git clone https://github.com/lauraordo93/EjerFicherosAlumnos.git
 
 
