@@ -8,26 +8,26 @@ Este proyecto gestiona una lista de alumnos utilizando diferentes tipos de fiche
 
 ## 📁 Estructura del proyecto
 
+```text
 EjerFicherosAlumnos/
 │
 ├── src/
-│ ├── main/java/com/laura/ficheros/
-│ │ ├── App.java
-│ │ ├── io/
-│ │ │ ├── FicheroTXT.java
-│ │ │ ├── FicheroCSV.java
-│ │ │ ├── FicheroBinario.java
-│ │ │ └── FicheroXML.java
-│ │ ├── models/
-│ │ │ ├── Alumno.java
-│ │ │ └── ListaAlumnos.java
-│ │ └── configuracionRutas.java
-│ └── test/java/com/laura/ficheros/AppTest.java
+│   ├── main/java/com/laura/ficheros/
+│   │   ├── App.java
+│   │   ├── io/
+│   │   │   ├── FicheroTXT.java
+│   │   │   ├── FicheroCSV.java
+│   │   │   ├── FicheroBinario.java
+│   │   │   └── FicheroXML.java
+│   │   ├── models/
+│   │   │   ├── Alumno.java
+│   │   │   └── ListaAlumnos.java
+│   │   └── configuracionRutas.java
+│   └── test/java/com/laura/ficheros/AppTest.java
 │
 ├── pom.xml
 └── .gitignore
 
----
 
 ## ⚙️ Funcionalidades principales
 
