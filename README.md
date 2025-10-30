@@ -15,14 +15,17 @@ EjerFicherosAlumnos/
 │   ├── main/java/com/laura/ficheros/
 │   │   ├── App.java
 │   │   ├── io/
-│   │   │   ├── FicheroTXT.java
-│   │   │   ├── FicheroCSV.java
+|   |   |   ├── configuracionRutas.java
 │   │   │   ├── FicheroBinario.java
+│   │   │   ├── FicheroCSV.java
+│   │   │   ├── FicheroJson.java
+│   │   │   ├── FicheroTXT.java
 │   │   │   └── FicheroXML.java
 │   │   ├── models/
 │   │   │   ├── Alumno.java
 │   │   │   └── ListaAlumnos.java
-│   │   └── configuracionRutas.java
+│   │   └── service/
+|   |   |   ├── AlumnoServices.java 
 │   └── test/java/com/laura/ficheros/AppTest.java
 │
 ├── pom.xml
@@ -31,11 +34,12 @@ EjerFicherosAlumnos/
 ## ⚙️ Funcionalidades principales
 
 - 📄 **Lectura y escritura en diferentes formatos:**
-  - TXT  
+  - Binario 
   - CSV  
-  - Binario  
+  - Json
+  - TXT
   - XML  
-  - *(En desarrollo: JSON)*
+
 
 - 👨‍🎓 **Gestión de alumnos:**
   - Alta, modificación y listado  
