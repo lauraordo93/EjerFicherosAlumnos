@@ -1,13 +1,12 @@
 package com.laura.ficheros.models;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 //@XmlAccessorType(XmlAccessType.FIELD) //Usa todos los campos directamente
 @XmlRootElement(name = "Aula")
 public class ListaAlumnos implements Serializable {
@@ -45,6 +44,16 @@ public class ListaAlumnos implements Serializable {
             }
         }
         System.out.println("---------------------------------");
+    }
+
+    public boolean eliminaAlumno(String expediente) {
+        for (int i = 0; i < alumnos.size(); i++) {
+            if (alumnos.get(i).getExpediente().equalsIgnoreCase(expediente)) {
+                alumnos.remove(i);
+                return true; // Éxito en la eliminación
+            }
+        }
+        return false; // Alumno no encontrado
     }
 
     @Override

@@ -4,34 +4,43 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 //alumn@ (expediente, nombre y apellidos).
 //LA SERIALIZACION ES EN BINARIO
 @XmlRootElement(name = "Alumno")
 public class Alumno implements Serializable {
-    private int expediente;
+    private String expediente;
     private String nombre;
     private String apellidos;
+    private List<Double> notas = new ArrayList<>();
 
 
     public Alumno() {
         //Constructor vacio requerido por JAXB
     }
 
+    public Alumno(String expediente, List<Double> notas, String apellidos, String nombre) {
+        this.expediente = expediente;
+        this.notas = notas;
+        this.apellidos = apellidos;
+        this.nombre = nombre;
+    }
 
     //Constructor con todos los campos
-    public Alumno(int expediente, String nombre, String apellidos) {
+    public Alumno(String expediente, String nombre, String apellidos) {
         this.expediente = expediente;
         this.nombre = nombre;
         this.apellidos = apellidos;
     }
 
     @XmlElement
-    public int getExpediente() {
+    public String getExpediente() {
         return expediente;
     }
 
-    public void setExpediente(int expediente) {
+    public void setExpediente(String expediente) {
         this.expediente = expediente;
     }
 
@@ -45,7 +54,6 @@ public class Alumno implements Serializable {
     }
 
 
-
     @XmlElement
     public String getApellidos() {
         return apellidos;
@@ -54,6 +62,7 @@ public class Alumno implements Serializable {
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
     @Override
     public String toString() {
         return "Alumno{" +

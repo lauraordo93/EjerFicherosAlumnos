@@ -36,14 +36,9 @@ public class App {
          */
 
 
-
         // --- 2. EL VASO (La lista en MEMORIA) ---
         //    (Cargamos desde XML por defecto, por ejemplo)
         System.out.println("Cargando datos iniciales...");
-
-
-
-
 
 
         // --- 2. PREPARACIÓN (El Jefe coge su "Vaso") ---
@@ -69,10 +64,9 @@ public class App {
                 case "1":
                     misAlumnos = gestionarTXT(misAlumnos, gestorTXT);
                 case "2":
-
+                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV);
                     break;
                 case "3":
-
                     misAlumnos = gestionarXML(misAlumnos, gestorXML);
                     break;
                 case "4":
@@ -111,7 +105,8 @@ public class App {
             System.out.println("2. Listar Alumnos (de la memoria)");
             System.out.println("3. Guardar cambios en TXT (Almacén)");
             System.out.println("4. Cargar datos desde TXT (Almacén)");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("5. Eliminar Alumno (Almacén)");
+            System.out.println("6. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -123,7 +118,7 @@ public class App {
                     System.out.println("Inserta Apellidos alumno: ");
                     String apellidos = sr.nextLine();
                     System.out.println("Inserta número de expediente alumno: ");
-                    int expediente = sr.nextInt();
+                    String expediente = sr.nextLine();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
                     // 3. Lo añades al "Vaso" (la lista en memoria)
@@ -146,8 +141,21 @@ public class App {
                     System.out.println("¡Datos cargados desde TXT!");
                     break;
                 case "5":
+                    System.out.println("Elimina alumno por expediente");
+                    String expedienteAEliminar = sr.nextLine();
+                    // Llama al método y captura el resultado (true/false)
+                    boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
+                    if (eliminado) {
+                        System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
+
+                    } else {
+                        System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
+                    }
+                    break;
+                case "6":
                     System.out.println("Volviendo al menú principal...");
                     break;
+
 
             }
 
@@ -166,7 +174,8 @@ public class App {
             System.out.println("2. Listar Alumnos (de la memoria)");
             System.out.println("3. Guardar cambios en XML (Almacén)");
             System.out.println("4. Cargar datos desde XML (Almacén)");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("5. Eliminar Alumno (Almacén)");
+            System.out.println("6. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -178,7 +187,7 @@ public class App {
                     System.out.println("Inserta Apellidos alumno: ");
                     String apellidos = sr.nextLine();
                     System.out.println("Inserta número de expediente alumno: ");
-                    int expediente = sr.nextInt();
+                    String expediente = sr.nextLine();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
                     // 3. Lo añades al "Vaso" (la lista en memoria)
@@ -201,8 +210,21 @@ public class App {
                     System.out.println("¡Datos cargados desde XML!");
                     break;
                 case "5":
+                    System.out.println("Elimina alumno por expediente");
+                    String expedienteAEliminar = sr.nextLine();
+                    // Llama al método y captura el resultado (true/false)
+                    boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
+                    if (eliminado) {
+                        System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
+
+                    } else {
+                        System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
+                    }
+                    break;
+                case "6":
                     System.out.println("Volviendo al menú principal...");
                     break;
+
 
             }
 
@@ -221,7 +243,8 @@ public class App {
             System.out.println("2. Listar Alumnos (de la memoria)");
             System.out.println("3. Guardar cambios en BINARIO (Almacén)");
             System.out.println("4. Cargar datos desde BINARIO (Almacén)");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("5. Eliminar Alumno (Almacén)");
+            System.out.println("6. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -233,7 +256,7 @@ public class App {
                     System.out.println("Inserta Apellidos alumno: ");
                     String apellidos = sr.nextLine();
                     System.out.println("Inserta número de expediente alumno: ");
-                    int expediente = sr.nextInt();
+                    String expediente = sr.nextLine();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
                     // 3. Lo añades al "Vaso" (la lista en memoria)
@@ -256,8 +279,21 @@ public class App {
                     System.out.println("¡Datos cargados desde BINARIO!");
                     break;
                 case "5":
+                    System.out.println("Elimina alumno por expediente");
+                    String expedienteAEliminar = sr.nextLine();
+                    // Llama al método y captura el resultado (true/false)
+                    boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
+                    if (eliminado) {
+                        System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
+
+                    } else {
+                        System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
+                    }
+                    break;
+                case "6":
                     System.out.println("Volviendo al menú principal...");
                     break;
+
 
             }
 
@@ -276,7 +312,8 @@ public class App {
             System.out.println("2. Listar Alumnos (de la memoria)");
             System.out.println("3. Guardar cambios en Json (Almacén)");
             System.out.println("4. Cargar datos desde Json (Almacén)");
-            System.out.println("5. Volver al menú principal");
+            System.out.println("5. Eliminar Alumno (Almacén)");
+            System.out.println("6. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -288,7 +325,7 @@ public class App {
                     System.out.println("Inserta Apellidos alumno: ");
                     String apellidos = sr.nextLine();
                     System.out.println("Inserta número de expediente alumno: ");
-                    int expediente = sr.nextInt();
+                    String expediente = sr.nextLine();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
                     // 3. Lo añades al "Vaso" (la lista en memoria)
@@ -311,8 +348,91 @@ public class App {
                     System.out.println("¡Datos cargados desde Json!");
                     break;
                 case "5":
+                    System.out.println("Elimina alumno por expediente");
+                    String expedienteAEliminar = sr.nextLine();
+                    // Llama al método y captura el resultado (true/false)
+                    boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
+                    if (eliminado) {
+                        System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
+
+                    } else {
+                        System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
+                    }
+                    break;
+                case "6":
                     System.out.println("Volviendo al menú principal...");
                     break;
+
+
+            }
+
+        } while (!opcionSubMenu.equals("5"));
+
+        // Devuelve la lista (actualizada o recargada) al Main
+        return lista;
+    }
+
+    public static ListaAlumnos gestionarCSV(ListaAlumnos lista, FicheroCSV gestor) {
+        String opcionSubMenu = "";
+
+        do {
+            System.out.println("\n--- MODO CSV ---");
+            System.out.println("1. Añadir Alumno (a la memoria)");
+            System.out.println("2. Listar Alumnos (de la memoria)");
+            System.out.println("3. Guardar cambios en CSV (Almacén)");
+            System.out.println("4. Cargar datos desde CSV (Almacén)");
+            System.out.println("5. Eliminar Alumno (Almacén)");
+            System.out.println("6. Volver al menú principal");
+
+
+            opcionSubMenu = sr.nextLine().trim();
+
+
+            switch (opcionSubMenu) {
+                case "1":
+                    System.out.println("Inserta Nombre alumno: ");
+                    String nombre = sr.nextLine();
+                    System.out.println("Inserta Apellidos alumno: ");
+                    String apellidos = sr.nextLine();
+                    System.out.println("Inserta número de expediente alumno: ");
+                    String expediente = sr.nextLine();
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    lista.agregarAlumno(alumnoNuevo);
+                    // 3. Lo añades al "Vaso" (la lista en memoria)
+                    // lista.add(nuevo);
+                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
+                    break;
+                case "2":
+                    // Miras el "Vaso"
+                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
+                    break;
+                case "3":
+                    // Le das el "Vaso" al "Especialista"
+                    System.out.println("Guardando en CSV...");
+                    gestor.guardarAlumnos(lista);
+                    break;
+                case "4":
+                    // Reemplazas el "Vaso"
+                    System.out.println("Cargando desde CSV...");
+                    lista = gestor.leerAlumnos();
+                    System.out.println("¡Datos cargados desde CSV!");
+                    break;
+                case "5":
+                    System.out.println("Elimina alumno por expediente");
+                    String expedienteAEliminar = sr.nextLine();
+                    // Llama al método y captura el resultado (true/false)
+                    boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
+                    if (eliminado) {
+                        System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
+
+                    } else {
+                        System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
+                    }
+                    break;
+                case "6":
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
 
             }
 

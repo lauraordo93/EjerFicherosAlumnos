@@ -1,1 +1,1 @@
-Alumno{expediente=1234567, nombre='Laura', apellidos='Ordoñez'}
+Alumno{expediente=123, nombre='Laura', apellidos='Ordoñez'}
