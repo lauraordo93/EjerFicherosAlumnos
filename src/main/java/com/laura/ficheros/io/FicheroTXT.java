@@ -16,6 +16,7 @@ public class FicheroTXT {
                 // .println() hace el trabajo de .write() + .newLine() en un solo paso
                 pw.println(alumno.toString()); // <-- Un solo paso
             //se pone toString porque es un objeto y le estas diciendo que tiene que leer
+            System.out.println("Alumnos guardados en fichero TXT");
         } catch (Exception e) {
             e.printStackTrace();
         }

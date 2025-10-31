@@ -3,6 +3,7 @@ package com.laura.ficheros;
 import com.laura.ficheros.io.*;
 import com.laura.ficheros.models.Alumno;
 import com.laura.ficheros.models.ListaAlumnos;
+import com.laura.ficheros.services.AlumnoServices;
 
 import static com.laura.ficheros.io.configuracionRutas.sr;
 
@@ -20,13 +21,24 @@ La idea es crear diferentes proyectos para implementar estas funcionalidades, ut
 Se recomienda usar POJOs con Lombok para simplificar getters, setters, constructores y toString. (opcional)*/
 public class App {
     public static void main(String[] args) {
+        // --- 2. PREPARACIÓN (El Jefe coge su "Vaso") ---
+        //    (Vamos a empezar con un vaso vacío esta vez, es más simple)
+        //Creamos instancia de objeto misAlumnos
+        ListaAlumnos misAlumnos = new ListaAlumnos();
 // --- 1. PREPARACIÓN (El Jefe contrata a TODOS los especialistas) ---
         FicheroBinario gestorBinario = new FicheroBinario();
         FicheroXML gestorXML = new FicheroXML();
         FicheroCSV gestorCSV = new FicheroCSV();
         FicheroTXT gestorTXT = new FicheroTXT();
         FicheroJson gestorJson = new FicheroJson();
-
+        AlumnoServices alumnoService = new AlumnoServices(
+                misAlumnos,        // Parámetro 1: La lista vacía
+                gestorBinario,      // Parámetro 2
+                gestorCSV,          // Parámetro 3
+                gestorJson,         // Parámetro 4
+                gestorTXT,          // Parámetro 5
+                gestorXML           // Parámetro 6
+        );
         /* PARA UTILIZAR LA LIBRERIA GSON HAY 2 OPCIONES Si creo el constructor dentro de la clase:
         * 1. Crea la configuración de Gson que quieres usar
           Gson configuracionGson = new GsonBuilder().setPrettyPrinting().create();
@@ -41,10 +53,7 @@ public class App {
         System.out.println("Cargando datos iniciales...");
 
 
-        // --- 2. PREPARACIÓN (El Jefe coge su "Vaso") ---
-        //    (Vamos a empezar con un vaso vacío esta vez, es más simple)
-        //Creamos instancia de objeto misAlumnos
-        ListaAlumnos misAlumnos = new ListaAlumnos();
+
         //Creamos menu
         boolean salir = false;
         String opcion = "";
@@ -62,18 +71,18 @@ public class App {
             opcion = sr.nextLine().trim().toLowerCase();
             switch (opcion) {
                 case "1":
-                    misAlumnos = gestionarTXT(misAlumnos, gestorTXT);
+                    misAlumnos = gestionarTXT(misAlumnos, gestorTXT,alumnoService);
                 case "2":
-                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV);
+                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV,alumnoService);
                     break;
                 case "3":
-                    misAlumnos = gestionarXML(misAlumnos, gestorXML);
+                    misAlumnos = gestionarXML(misAlumnos, gestorXML,alumnoService);
                     break;
                 case "4":
-                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario);
+                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario,alumnoService);
                     break;
                 case "5":
-                    misAlumnos = gestionarJson(misAlumnos, gestorJson);
+                    misAlumnos = gestionarJson(misAlumnos, gestorJson,alumnoService);
                     break;
                 case "6":
                     salir = true;
@@ -96,7 +105,7 @@ public class App {
      */
 
     //Hay que crear 3 clases mas con cada una de los Ficheros
-    public static ListaAlumnos gestionarTXT(ListaAlumnos lista, FicheroTXT gestor) {
+    public static ListaAlumnos gestionarTXT(ListaAlumnos lista, FicheroTXT gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
         do {
@@ -106,7 +115,10 @@ public class App {
             System.out.println("3. Guardar cambios en TXT (Almacén)");
             System.out.println("4. Cargar datos desde TXT (Almacén)");
             System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Volver al menú principal");
+            System.out.println("6. Añadir Nota");
+            System.out.println("7. Modificar Nota");
+            System.out.println("8. Eliminar Nota");
+            System.out.println("9. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -153,6 +165,28 @@ public class App {
                     }
                     break;
                 case "6":
+                    System.out.println("Inserta nota por expediente:");
+                    System.out.println("Expediente: ");
+                    expediente = sr.nextLine();
+                    System.out.println("Nota: ");
+                    double nota = sr.nextDouble();
+                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+
+                    try {
+                        alumnoService.insertarNota(expediente, nota);
+                    } catch (Exception e) {
+                        System.err.println("ERROR al insertar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "7":
+
+                    break;
+                case "8":
+
+                    break;
+
+                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -165,7 +199,7 @@ public class App {
         return lista;
     }
 
-    public static ListaAlumnos gestionarXML(ListaAlumnos lista, FicheroXML gestor) {
+    public static ListaAlumnos gestionarXML(ListaAlumnos lista, FicheroXML gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
         do {
@@ -175,7 +209,10 @@ public class App {
             System.out.println("3. Guardar cambios en XML (Almacén)");
             System.out.println("4. Cargar datos desde XML (Almacén)");
             System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Volver al menú principal");
+            System.out.println("6. Añadir Nota");
+            System.out.println("7. Modificar Nota");
+            System.out.println("8. Eliminar Nota");
+            System.out.println("9. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -222,6 +259,28 @@ public class App {
                     }
                     break;
                 case "6":
+                    System.out.println("Inserta nota por expediente:");
+                    System.out.println("Expediente: ");
+                    expediente = sr.nextLine();
+                    System.out.println("Nota: ");
+                    double nota = sr.nextDouble();
+                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+
+                    try {
+                        alumnoService.insertarNota(expediente, nota);
+                    } catch (Exception e) {
+                        System.err.println("ERROR al insertar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "7":
+
+                    break;
+                case "8":
+
+                    break;
+
+                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -234,7 +293,7 @@ public class App {
         return lista;
     }
 
-    public static ListaAlumnos gestionarBinario(ListaAlumnos lista, FicheroBinario gestor) {
+    public static ListaAlumnos gestionarBinario(ListaAlumnos lista, FicheroBinario gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
         do {
@@ -244,7 +303,10 @@ public class App {
             System.out.println("3. Guardar cambios en BINARIO (Almacén)");
             System.out.println("4. Cargar datos desde BINARIO (Almacén)");
             System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Volver al menú principal");
+            System.out.println("6. Añadir Nota");
+            System.out.println("7. Modificar Nota");
+            System.out.println("8. Eliminar Nota");
+            System.out.println("9. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -291,6 +353,28 @@ public class App {
                     }
                     break;
                 case "6":
+                    System.out.println("Inserta nota por expediente:");
+                    System.out.println("Expediente: ");
+                    expediente = sr.nextLine();
+                    System.out.println("Nota: ");
+                    double nota = sr.nextDouble();
+                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+
+                    try {
+                        alumnoService.insertarNota(expediente, nota);
+                    } catch (Exception e) {
+                        System.err.println("ERROR al insertar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "7":
+
+                    break;
+                case "8":
+
+                    break;
+
+                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -303,7 +387,7 @@ public class App {
         return lista;
     }
 
-    public static ListaAlumnos gestionarJson(ListaAlumnos lista, FicheroJson gestor) {
+    public static ListaAlumnos gestionarJson(ListaAlumnos lista, FicheroJson gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
         do {
@@ -313,7 +397,10 @@ public class App {
             System.out.println("3. Guardar cambios en Json (Almacén)");
             System.out.println("4. Cargar datos desde Json (Almacén)");
             System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Volver al menú principal");
+            System.out.println("6. Añadir Nota");
+            System.out.println("7. Modificar Nota");
+            System.out.println("8. Eliminar Nota");
+            System.out.println("9. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -360,6 +447,28 @@ public class App {
                     }
                     break;
                 case "6":
+                    System.out.println("Inserta nota por expediente:");
+                    System.out.println("Expediente: ");
+                    expediente = sr.nextLine();
+                    System.out.println("Nota: ");
+                    double nota = sr.nextDouble();
+                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+
+                    try {
+                        alumnoService.insertarNota(expediente, nota);
+                    } catch (Exception e) {
+                        System.err.println("ERROR al insertar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "7":
+
+                    break;
+                case "8":
+
+                    break;
+
+                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -372,7 +481,7 @@ public class App {
         return lista;
     }
 
-    public static ListaAlumnos gestionarCSV(ListaAlumnos lista, FicheroCSV gestor) {
+    public static ListaAlumnos gestionarCSV(ListaAlumnos lista, FicheroCSV gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
         do {
@@ -382,7 +491,10 @@ public class App {
             System.out.println("3. Guardar cambios en CSV (Almacén)");
             System.out.println("4. Cargar datos desde CSV (Almacén)");
             System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Volver al menú principal");
+            System.out.println("6. Añadir Nota");
+            System.out.println("7. Modificar Nota");
+            System.out.println("8. Eliminar Nota");
+            System.out.println("9. Volver al menú principal");
 
 
             opcionSubMenu = sr.nextLine().trim();
@@ -430,6 +542,28 @@ public class App {
                     }
                     break;
                 case "6":
+                    System.out.println("Inserta nota por expediente:");
+                    System.out.println("Expediente: ");
+                    expediente = sr.nextLine();
+                    System.out.println("Nota: ");
+                    double nota = sr.nextDouble();
+                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+
+                    try {
+                        alumnoService.insertarNota(expediente, nota);
+                    } catch (Exception e) {
+                        System.err.println("ERROR al insertar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "7":
+
+                    break;
+                case "8":
+
+                    break;
+
+                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 

@@ -16,6 +16,13 @@ public class Alumno implements Serializable {
     private String apellidos;
     private List<Double> notas = new ArrayList<>();
 
+    public List<Double> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Double> notas) {
+        this.notas = notas;
+    }
 
     public Alumno() {
         //Constructor vacio requerido por JAXB

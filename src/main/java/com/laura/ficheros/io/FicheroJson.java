@@ -35,7 +35,7 @@ public class FicheroJson {
 
         try (FileWriter fw = new FileWriter(archivo)) {
             gson.toJson(listaAlumnos.getAlumnos(), fw);
-            System.out.println("Alumno guardado");
+            System.out.println("Alumno guardado en fichero Json");
         } catch (Exception e) {
             e.printStackTrace();
         }

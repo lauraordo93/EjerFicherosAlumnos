@@ -2,7 +2,8 @@
 <Aula>
     <Alumno>
         <apellidos>Ordoñez</apellidos>
-        <expediente>222</expediente>
-        <nombre>Alex</nombre>
+        <expediente>123</expediente>
+        <nombre>Laura</nombre>
+        <notas>9.0</notas>
     </Alumno>
 </Aula>

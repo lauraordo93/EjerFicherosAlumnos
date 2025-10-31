@@ -1,7 +1,10 @@
 [
   {
-    "expediente": 12345678,
+    "expediente": "123",
     "nombre": "Laura",
-    "apellidos": "Ordo?ez"
+    "apellidos": "Ordoñez",
+    "notas": [
+      9.0
+    ]
   }
 ]
