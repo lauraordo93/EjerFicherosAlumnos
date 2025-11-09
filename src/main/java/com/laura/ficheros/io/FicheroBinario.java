@@ -31,7 +31,8 @@ public class FicheroBinario {
         File archivo = configuracionRutas.archivoBin;
         if (!archivo.exists() || archivo.length() == 0) {
             System.out.println("El archivo Binario no esta creado, creando...");
-            guardarAlumnos(listaleida);
+            //guardarAlumnos(listaleida);
+            return listaleida;
 
         }
 
@@ -43,10 +44,11 @@ public class FicheroBinario {
             en tu objeto*/
 
             listaleida = (ListaAlumnos) ois.readObject();//Casteamos con lista de alumnos
+
             System.out.println("--Binario Leido--");
         } catch (Exception e) {
             System.out.println("Error" + e.getMessage());
         }
-        return listaleida; // (devuelve la lista leída)
+        return listaleida; // (devuelve la lista leï¿½da)
     }
 }

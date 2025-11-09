@@ -5,7 +5,6 @@ import com.laura.ficheros.models.Alumno;
 import com.laura.ficheros.models.ListaAlumnos;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 public class AlumnoServices {
@@ -81,7 +80,8 @@ public class AlumnoServices {
                 //Hemos cambiado a Double objeto
                 if (a.getNota() != null) {
                     a.setNota(nuevaNota);
-                }} else {
+                }
+            } else {
 
                 throw new Exception("El alumno no tiene una nota registrada para modificar.");
 
@@ -101,21 +101,9 @@ public class AlumnoServices {
         return null;
     }
 
-    public void cargarListaTXT() {
-        // Actualiza la lista interna del servicio
-        ListaAlumnos cargada = ficheroTXT.leerAlumnos();
-        this.lista.setAlumnos(cargada.getAlumnos());
+    public void eliminarNota(String expediente) {
+        String expedienteLimpio = expediente.trim();
 
-    }
-
-    public void cargarListaXML(ListaAlumnos lista) {
-
-        // 1. Lee el fichero y crea una NUEVA lista cargada (Referencia B).
-        ListaAlumnos cargada = ficheroXML.leerAlumnos();
-
-        // 2. Transfiere el CONTENIDO de la Referencia B a la Referencia A (this.lista).
-
-        this.lista.setAlumnos(cargada.getAlumnos());
 
     }
 

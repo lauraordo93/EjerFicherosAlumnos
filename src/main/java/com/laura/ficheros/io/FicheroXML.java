@@ -18,7 +18,7 @@ public class FicheroXML {
             JAXBContext context = JAXBContext.newInstance(ListaAlumnos.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            //Despues de poenr la estructura tenemos que guardar la lista en el fichero
+            //Despues de poner la estructura tenemos que guardar la lista en el fichero
             marshaller.marshal(listaalumnos, archivo);
             System.out.println("Alumnos guardados XML");
         } catch (Exception e) {
