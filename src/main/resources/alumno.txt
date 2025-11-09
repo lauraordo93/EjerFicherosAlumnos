@@ -1,1 +1,1 @@
-Alumno{expediente=111, nombre='Laura', apellidos='Ordoñez', notas='[]'}
+111;Ordoñez;Laura;5.0

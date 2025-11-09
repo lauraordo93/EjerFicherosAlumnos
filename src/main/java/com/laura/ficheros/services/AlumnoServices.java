@@ -18,7 +18,6 @@ public class AlumnoServices {
     private final FicheroXML ficheroXML;
 
 
-
     public AlumnoServices(ListaAlumnos lista, FicheroBinario ficheroBinario, FicheroCSV ficheroCSV, FicheroJson ficheroJson, FicheroTXT ficheroTXT, FicheroXML ficheroXML) {
         this.lista = lista;
         this.ficheroBinario = ficheroBinario;
@@ -58,7 +57,7 @@ public class AlumnoServices {
             if (alumno.getExpediente().trim().equals(expedienteLimpio)) {
 
                 // 4. Si se encuentra, añadir la nota
-                alumno.getNotas().add(nota);
+                alumno.setNota(nota);
 
                 // Si la operación es exitosa, se puede añadir un mensaje de confirmación
                 System.out.println("Nota " + nota + " añadida al alumno " + expedienteLimpio + " en la memoria.");
@@ -70,51 +69,59 @@ public class AlumnoServices {
         throw new Exception("No se encontró ningún alumno con el expediente " + expedienteLimpio + " para añadir la nota.");
     }
 
-    public void modificarNota(String expediente, int indice, double nuevaNota) {
-        ListaAlumnos listaCompleta = ficheroJson.leerAlumnos();
-        for (Alumno a : listaCompleta.getAlumnos()) {
-            if (a.getExpediente().equals(expediente)) {
-                if (indice >= 0 && indice < a.getNotas().size()) {
-                    a.getNotas().set(indice, nuevaNota);
-                }
-                break;
+    public void modificarNota(String expediente, double nuevaNota) throws Exception {
+        // 1. Limpieza de entrada
+        String expedienteLimpio = expediente.trim();
+        //ListaAlumnos listaCompleta = ficheroJson.leerAlumnos();
+        for (Alumno a : this.lista.getAlumnos()) {
+            if (a.getExpediente().trim().equals(expedienteLimpio)) {
+                // 2. Aquí no hay necesidad de validar el índice.
+                //    Simplemente validamos que la nota anterior existe (no es null)
+                //    y la actualizamos.
+                //Hemos cambiado a Double objeto
+                if (a.getNota() != null) {
+                    a.setNota(nuevaNota);
+                }} else {
+
+                throw new Exception("El alumno no tiene una nota registrada para modificar.");
+
             }
+            break;
         }
-        this.ficheroJson.guardarAlumnos(listaCompleta);
-        this.ficheroTXT.guardarAlumnos(listaCompleta);
-        this.ficheroBinario.guardarAlumnos(listaCompleta);
-        this.ficheroXML.guardarAlumnos(listaCompleta);
-        this.ficheroCSV.guardarAlumnos(listaCompleta);
+
     }
 
-    public List<Double> consultarNota(String expediente) {
-        ListaAlumnos listaCompleta = ficheroJson.leerAlumnos();
-        for (Alumno a : listaCompleta.getAlumnos()) {
-            if (a.getExpediente().equals(expediente)) {
-                return a.getNotas();
+    public Double consultarNota(String expediente) {
+        String expedienteLimpio = expediente.trim();
+        for (Alumno a : this.lista.getAlumnos()) {
+            if (a.getExpediente().trim().equals(expedienteLimpio)) {
+                return a.getNota();
             }
         }
         return null;
     }
+
     public void cargarListaTXT() {
         // Actualiza la lista interna del servicio
         ListaAlumnos cargada = ficheroTXT.leerAlumnos();
         this.lista.setAlumnos(cargada.getAlumnos());
 
     }
+
     public void cargarListaXML(ListaAlumnos lista) {
 
-            // 1. Lee el fichero y crea una NUEVA lista cargada (Referencia B).
-            ListaAlumnos cargada = ficheroXML.leerAlumnos();
+        // 1. Lee el fichero y crea una NUEVA lista cargada (Referencia B).
+        ListaAlumnos cargada = ficheroXML.leerAlumnos();
 
-            // 2. Transfiere el CONTENIDO de la Referencia B a la Referencia A (this.lista).
+        // 2. Transfiere el CONTENIDO de la Referencia B a la Referencia A (this.lista).
 
-            this.lista.setAlumnos(cargada.getAlumnos());
+        this.lista.setAlumnos(cargada.getAlumnos());
 
-        }
+    }
+
     public void setLista(ListaAlumnos nuevaLista) {
         // 💡 Asegúrate de que esta línea apunta a tu variable interna
         this.lista = nuevaLista;
     }
-    }
+}
 

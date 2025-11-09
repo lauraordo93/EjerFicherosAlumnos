@@ -6,7 +6,6 @@ import com.laura.ficheros.models.ListaAlumnos;
 import com.laura.ficheros.services.AlumnoServices;
 
 import java.util.InputMismatchException;
-import java.util.List;
 
 import static com.laura.ficheros.io.configuracionRutas.sr;
 
@@ -75,16 +74,16 @@ public class App {
                 case "1":
                     misAlumnos = gestionarTXT(misAlumnos, gestorTXT, alumnoService);
                 case "2":
-                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV, alumnoService);
+                    //misAlumnos = gestionarCSV(misAlumnos, gestorCSV, alumnoService);
                     break;
                 case "3":
                     misAlumnos = gestionarXML(misAlumnos, gestorXML, alumnoService);
                     break;
                 case "4":
-                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario, alumnoService);
+                    // misAlumnos = gestionarBinario(misAlumnos, gestorBinario, alumnoService);
                     break;
                 case "5":
-                    misAlumnos = gestionarJson(misAlumnos, gestorJson, alumnoService);
+                    //misAlumnos = gestionarJson(misAlumnos, gestorJson, alumnoService);
                     break;
                 case "6":
                     salir = true;
@@ -111,10 +110,10 @@ public class App {
 
         do {
             System.out.println("\n--- MODO TXT ---");
-            System.out.println("1. Añadir Alumno ");
-            System.out.println("2. Cargar Alumnos desde TXT");
+            System.out.println("1. Dar de alta Alumno ");
+            System.out.println("2. Cargar lista Alumnos desde TXT");
             System.out.println("3. Eliminar Alumno");
-            System.out.println("4. Añadir Nota");
+            System.out.println("4. Añadir Nota final");
             System.out.println("5. Modificar Nota");
             System.out.println("6. Eliminar Nota");
             System.out.println("7. Volver al menú principal");
@@ -130,7 +129,9 @@ public class App {
                     String apellidos = sr.nextLine().trim();
                     System.out.println("Inserta número de expediente alumno: ");
                     String expediente = sr.nextLine().trim();
-                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    System.out.print("Nota: ");
+                    double nota = Double.parseDouble(sr.nextLine());
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos, nota);
                     lista.agregarAlumno(alumnoNuevo);
                     System.out.println("Alumno añadido a la memoria.");
                     System.out.println("Guardando cambios en TXT...");
@@ -139,7 +140,9 @@ public class App {
                     break;
                 case "2":
                     System.out.println("Cargando desde TXT...");
-                    alumnoService.cargarListaTXT();
+                    lista = gestor.leerAlumnos();
+                    lista.mostrarAlumnos();
+                    alumnoService.setLista(lista);
 
                     System.out.println("¡Datos cargados desde TXT!");
                     break;
@@ -167,11 +170,15 @@ public class App {
                     System.out.println("Expediente: ");
                     expediente = sr.nextLine().trim();
                     System.out.println("Nota: ");
-                    double nota = sr.nextDouble();
-                    sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
+                    String notaStr = sr.nextLine().trim();
 
                     try {
+                        // Convierte la entrada de la nota
+                         nota = Double.parseDouble(notaStr);
+
+                        // 3. Llama al servicio con las variables ya limpias y convertidas
                         alumnoService.insertarNota(expediente, nota);
+
                         System.out.println("Nota insertada en la memoria. Guardando cambios en TXT...");
                         gestor.guardarAlumnos(lista);
                         System.out.println("Cambios guardados en el archivo TXT.");
@@ -186,27 +193,22 @@ public class App {
                     try {
                         expediente = sr.nextLine().trim();
                         //Capturamos la lista devuelta por el metodo consultar nota
-                        List<Double> notas = alumnoService.consultarNota(expediente);
+                        Double notaActual = alumnoService.consultarNota(expediente);
                         //Comprobamos si se encuentran notas y las mostramos si es asi
-                        if (notas == null || notas.isEmpty()) {
+                        if (notaActual == null) {
                             System.out.println("Alumno no encontrado o no tiene notas registradas.");
                             break;
                         }
 
                         System.out.println("\nNotas actuales del alumno (Posición | Nota):");
 
-                        // 3. Imprimir la lista con su posición (índice + 1)
-                        for (int i = 0; i < notas.size(); i++) {
-                            System.out.println((i + 1) + " | " + notas.get(i));
-                        }
-                        System.out.println("\nIngresa la posicion de la nota que quieres cambiar");
-                        int pos = sr.nextInt();
-                        sr.nextLine();//Consumir salto de linea
                         System.out.println("Ingrese la nueva nota:");
                         double nuevaNota = sr.nextDouble();
                         sr.nextLine();//Consumir salto de linea
-                        alumnoService.modificarNota(expediente, pos, nuevaNota);
+                        alumnoService.modificarNota(expediente, nuevaNota);
                         System.out.println("El alumno con el expediente:" + expediente + " tiene una nueva nota: " + nuevaNota);
+                        gestor.guardarAlumnos(lista);
+                        System.out.println("Cambios guardados en el archivo.");
 
                     } catch (InputMismatchException e) {
                         System.err.println("ERROR: La entrada no es un número válido. Inténtalo de nuevo.");
@@ -225,7 +227,7 @@ public class App {
 
             }
 
-        } while (!opcionSubMenu.equals("5"));
+        } while (!opcionSubMenu.equals("7"));
 
         // Devuelve la lista (actualizada o recargada) al Main
         return lista;
@@ -236,10 +238,10 @@ public class App {
 
         do {
             System.out.println("\n--- MODO XML ---");
-            System.out.println("1. Añadir Alumno ");
-            System.out.println("2. Cargar Alumnos desde XML");
+            System.out.println("1. Dar de alta Alumno ");
+            System.out.println("2. Cargar lista de Alumnos desde XML");
             System.out.println("3. Eliminar Alumno");
-            System.out.println("4. Añadir Nota");
+            System.out.println("4. Añadir Nota final");
             System.out.println("5. Modificar Nota");
             System.out.println("6. Eliminar Nota");
             System.out.println("7. Volver al menú principal");
@@ -255,7 +257,9 @@ public class App {
                     String apellidos = sr.nextLine().trim();
                     System.out.println("Inserta número de expediente alumno: ");
                     String expediente = sr.nextLine().trim();
-                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
+                    System.out.print("Nota: ");
+                    double nota = Double.parseDouble(sr.nextLine());
+                    Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos, nota);
                     lista.agregarAlumno(alumnoNuevo);
                     System.out.println("Alumno añadido a la memoria.");
                     System.out.println("Guardando cambios en XML...");
@@ -264,15 +268,12 @@ public class App {
                     break;
                 case "2":
                     System.out.println("Cargando desde XML...");
-                    //alumnoService.cargarListaXML();
-                    //gestor.leerAlumnos().mostrarAlumnos();
+
+
                     lista = gestor.leerAlumnos();
-
-                    // Opcional: Ahora puedes ver la lista que acabas de cargar
                     lista.mostrarAlumnos();
+                    alumnoService.setLista(lista);
 
-                    // Y asegúrate de actualizar la lista del servicio para las operaciones (notas)
-                    alumnoService.cargarListaXML(lista);
                     System.out.println("¡Datos cargados desde XML!");
                     break;
                 case "3":
@@ -299,7 +300,7 @@ public class App {
                     System.out.println("Expediente: ");
                     expediente = sr.nextLine().trim();
                     System.out.println("Nota: ");
-                    double nota = sr.nextDouble();
+                    nota = sr.nextDouble();
                     sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
 
                     try {
@@ -319,26 +320,18 @@ public class App {
                     try {
                         expediente = sr.nextLine().trim();
                         //Capturamos la lista devuelta por el metodo consultar nota
-                        List<Double> notas = alumnoService.consultarNota(expediente);
+                        Double notasActual = alumnoService.consultarNota(expediente);
                         //Comprobamos si se encuentran notas y las mostramos si es asi
-                        if (notas == null || notas.isEmpty()) {
+                        if (notasActual == null) {
                             System.out.println("Alumno no encontrado o no tiene notas registradas.");
                             break;
                         }
 
-                        System.out.println("\nNotas actuales del alumno (Posición | Nota):");
 
-                        // 3. Imprimir la lista con su posición (índice + 1)
-                        for (int i = 0; i < notas.size(); i++) {
-                            System.out.println((i + 1) + " | " + notas.get(i));
-                        }
-                        System.out.println("\nIngresa la posicion de la nota que quieres cambiar");
-                        int pos = sr.nextInt();
-                        sr.nextLine();//Consumir salto de linea
                         System.out.println("Ingrese la nueva nota:");
                         double nuevaNota = sr.nextDouble();
                         sr.nextLine();//Consumir salto de linea
-                        alumnoService.modificarNota(expediente, pos, nuevaNota);
+                        alumnoService.modificarNota(expediente, nuevaNota);
                         System.out.println("El alumno con el expediente:" + expediente + " tiene una nueva nota: " + nuevaNota);
 
                     } catch (InputMismatchException e) {
@@ -364,6 +357,7 @@ public class App {
         return lista;
     }
 
+    /*
     public static ListaAlumnos gestionarBinario(ListaAlumnos lista, FicheroBinario gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
@@ -457,7 +451,9 @@ public class App {
         // Devuelve la lista (actualizada o recargada) al Main
         return lista;
     }
+*/
 
+    /*
     public static ListaAlumnos gestionarJson(ListaAlumnos lista, FicheroJson gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
@@ -551,7 +547,8 @@ public class App {
         // Devuelve la lista (actualizada o recargada) al Main
         return lista;
     }
-
+*/
+    /*
     public static ListaAlumnos gestionarCSV(ListaAlumnos lista, FicheroCSV gestor, AlumnoServices alumnoService) {
         String opcionSubMenu = "";
 
@@ -646,4 +643,6 @@ public class App {
         // Devuelve la lista (actualizada o recargada) al Main
         return lista;
     }
+    */
+
 }

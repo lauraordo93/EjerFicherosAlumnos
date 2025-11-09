@@ -14,27 +14,27 @@ public class Alumno implements Serializable {
     private String expediente;
     private String nombre;
     private String apellidos;
-    private List<Double> notas = new ArrayList<>();
+    private Double nota;
 
-    @XmlElementWrapper(name = "Notas")
+
     @XmlElement(name = "nota", type = Double.class)
-    public List<Double> getNotas() {
-        return notas;
+    public Double getNota() {
+        return nota;
     }
 
-    public void setNotas(List<Double> notas) {
-        this.notas = notas;
+    public void setNota(Double nota) {
+        this.nota = nota;
     }
 
     public Alumno() {
         //Constructor vacio requerido por JAXB
     }
 
-    public Alumno(String expediente, List<Double> notas, String apellidos, String nombre) {
+    public Alumno(String expediente, String apellidos, String nombre, Double nota) {
         this.expediente = expediente;
-        this.notas = notas;
         this.apellidos = apellidos;
         this.nombre = nombre;
+        this.nota = nota;
     }
 
     //Constructor con todos los campos
@@ -74,12 +74,17 @@ public class Alumno implements Serializable {
 
     @Override
     public String toString() {
-        return "Alumno{" +
-                "expediente=" + expediente +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", notas='" + notas + '\'' +
-                '}';
+        // Definimos el valor de la nota: si es null (no tiene nota), se escribe vacío.
+        // Si la nota es de tipo 'double' primitivo, usa String.valueOf(this.nota).
+        // Si la nota es de tipo 'Double' objeto, verifica si es null.
+        String notaDisplay = (this.nota != null) ? String.valueOf(this.nota) : "N/A";
+
+        // Formato requerido por leerAlumnos: expediente;nombre;apellidos;nota
+        return String.format("Exp: %s | Nombre: %s %s | Nota Final: %s",
+                this.expediente,
+                this.nombre,
+                this.apellidos,
+                notaDisplay);
     }
 }
 
