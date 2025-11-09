@@ -1,6 +1,6 @@
 # 🧮 EjerFicherosAlumnos en desarrollo..
 
-**Ejercicio práctico de lectura y escritura de ficheros en Java**, desarrollando como parte del Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).
+**Ejercicio práctico de lectura y escritura de ficheros en Java**, en desarrollo como parte del Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).
 
 Este proyecto gestiona una lista de alumnos utilizando diferentes tipos de ficheros para almacenar y recuperar la información.
 
