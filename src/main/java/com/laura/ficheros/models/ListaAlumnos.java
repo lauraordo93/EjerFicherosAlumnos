@@ -1,5 +1,7 @@
 package com.laura.ficheros.models;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
@@ -8,8 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 //@XmlAccessorType(XmlAccessType.FIELD) //Usa todos los campos directamente
-@XmlRootElement(name = "Aula")
+@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlRootElement(name = "ListaDeAlumnos")
 public class ListaAlumnos implements Serializable {
+
     private List<Alumno> alumnos = new ArrayList<>();
 
     @XmlElement(name = "Alumno")

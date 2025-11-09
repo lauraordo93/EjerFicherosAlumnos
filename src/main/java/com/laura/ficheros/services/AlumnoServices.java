@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AlumnoServices {
-    private final ListaAlumnos lista;
+    private ListaAlumnos lista;
     private final Scanner sc = new Scanner(System.in);
     private final FicheroBinario ficheroBinario;
     private final FicheroCSV ficheroCSV;
@@ -32,35 +32,42 @@ public class AlumnoServices {
 
     public void eliminarAlumno() throws IOException {
         System.out.println("Expediente: ");
-        String expediente = sc.nextLine();
-        lista.eliminaAlumno(expediente);
-        ficheroBinario.guardarAlumnos(lista);
-        ficheroCSV.guardarAlumnos(lista);
-        ficheroJson.guardarAlumnos(lista);
-        ficheroTXT.guardarAlumnos(lista);
-        ficheroXML.guardarAlumnos(lista);
+        String expediente = sc.nextLine().trim();
+        boolean eliminado = lista.eliminaAlumno(expediente);
+
+        if (eliminado) {
+            System.out.println("Éxito: Alumno " + expediente + " eliminado. Guardando cambios...");
+            ficheroBinario.guardarAlumnos(lista);
+            ficheroCSV.guardarAlumnos(lista);
+            ficheroJson.guardarAlumnos(lista);
+            ficheroTXT.guardarAlumnos(lista);
+            ficheroXML.guardarAlumnos(lista);
+        } else {
+            System.out.println("Error: No se encontró ningún alumno con el expediente " + expediente + ".");
+        }
     }
 
-    public void insertarNota(String expediente, double nota) {
+    public void insertarNota(String expediente, double nota) throws Exception {
+        String expedienteLimpio = expediente.trim();
 
+        // 2. Iterar sobre la LISTA ACTIVA EN MEMORIA (this.lista)
+        //    Usamos un bucle para buscar el alumno
+        for (Alumno alumno : this.lista.getAlumnos()) { // <-- Usar la lista interna activa
 
-        // 1. Leer el objeto contenedor ListaAlumnos
-        ListaAlumnos listaCompleta = ficheroJson.leerAlumnos();
+            // 3. Buscar y comparar de forma segura (limpiando el expediente almacenado)
+            if (alumno.getExpediente().trim().equals(expedienteLimpio)) {
 
-        // CORRECCIÓN 1: Debes iterar sobre la lista interna,
+                // 4. Si se encuentra, añadir la nota
+                alumno.getNotas().add(nota);
 
-        for (Alumno a : listaCompleta.getAlumnos()) {
-            if (a.getExpediente().equals(expediente)) {
-                a.getNotas().add(nota);
-                break;
+                // Si la operación es exitosa, se puede añadir un mensaje de confirmación
+                System.out.println("Nota " + nota + " añadida al alumno " + expedienteLimpio + " en la memoria.");
+                return; // Salir del método tras el éxito
             }
         }
 
-        this.ficheroJson.guardarAlumnos(listaCompleta);
-        this.ficheroTXT.guardarAlumnos(listaCompleta);
-        this.ficheroBinario.guardarAlumnos(listaCompleta);
-        this.ficheroXML.guardarAlumnos(listaCompleta);
-        this.ficheroCSV.guardarAlumnos(listaCompleta);
+        // Si el bucle termina sin encontrar el alumno
+        throw new Exception("No se encontró ningún alumno con el expediente " + expedienteLimpio + " para añadir la nota.");
     }
 
     public void modificarNota(String expediente, int indice, double nuevaNota) {
@@ -89,6 +96,25 @@ public class AlumnoServices {
         }
         return null;
     }
+    public void cargarListaTXT() {
+        // Actualiza la lista interna del servicio
+        ListaAlumnos cargada = ficheroTXT.leerAlumnos();
+        this.lista.setAlumnos(cargada.getAlumnos());
 
+    }
+    public void cargarListaXML(ListaAlumnos lista) {
 
-}
+            // 1. Lee el fichero y crea una NUEVA lista cargada (Referencia B).
+            ListaAlumnos cargada = ficheroXML.leerAlumnos();
+
+            // 2. Transfiere el CONTENIDO de la Referencia B a la Referencia A (this.lista).
+
+            this.lista.setAlumnos(cargada.getAlumnos());
+
+        }
+    public void setLista(ListaAlumnos nuevaLista) {
+        // 💡 Asegúrate de que esta línea apunta a tu variable interna
+        this.lista = nuevaLista;
+    }
+    }
+

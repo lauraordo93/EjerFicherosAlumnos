@@ -5,6 +5,9 @@ import com.laura.ficheros.models.Alumno;
 import com.laura.ficheros.models.ListaAlumnos;
 import com.laura.ficheros.services.AlumnoServices;
 
+import java.util.InputMismatchException;
+import java.util.List;
+
 import static com.laura.ficheros.io.configuracionRutas.sr;
 
 /*
@@ -53,7 +56,6 @@ public class App {
         System.out.println("Cargando datos iniciales...");
 
 
-
         //Creamos menu
         boolean salir = false;
         String opcion = "";
@@ -64,25 +66,25 @@ public class App {
             System.out.println("2. Ficheros CSV (.csv)");//Falta
             System.out.println("3. Ficheros XML (.xml)");
             System.out.println("4. Ficheros Binarios (.dat)");
-            System.out.println("5. Ficheros Json (.json)");//Falta
+            System.out.println("5. Ficheros Json (.json)");
             System.out.println("6. Salir");
 
             //Declaramos variable opcion para que el usuario pueda elegir
             opcion = sr.nextLine().trim().toLowerCase();
             switch (opcion) {
                 case "1":
-                    misAlumnos = gestionarTXT(misAlumnos, gestorTXT,alumnoService);
+                    misAlumnos = gestionarTXT(misAlumnos, gestorTXT, alumnoService);
                 case "2":
-                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV,alumnoService);
+                    misAlumnos = gestionarCSV(misAlumnos, gestorCSV, alumnoService);
                     break;
                 case "3":
-                    misAlumnos = gestionarXML(misAlumnos, gestorXML,alumnoService);
+                    misAlumnos = gestionarXML(misAlumnos, gestorXML, alumnoService);
                     break;
                 case "4":
-                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario,alumnoService);
+                    misAlumnos = gestionarBinario(misAlumnos, gestorBinario, alumnoService);
                     break;
                 case "5":
-                    misAlumnos = gestionarJson(misAlumnos, gestorJson,alumnoService);
+                    misAlumnos = gestionarJson(misAlumnos, gestorJson, alumnoService);
                     break;
                 case "6":
                     salir = true;
@@ -97,7 +99,6 @@ public class App {
 
     }
 
-    // (Esto va DENTRO de la clase Main, pero FUERA del metodo main)
 
     /**
      * Muestra el sub-menú para operar con ficheros TXT.
@@ -110,15 +111,13 @@ public class App {
 
         do {
             System.out.println("\n--- MODO TXT ---");
-            System.out.println("1. Añadir Alumno (a la memoria)");
-            System.out.println("2. Listar Alumnos (de la memoria)");
-            System.out.println("3. Guardar cambios en TXT (Almacén)");
-            System.out.println("4. Cargar datos desde TXT (Almacén)");
-            System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Añadir Nota");
-            System.out.println("7. Modificar Nota");
-            System.out.println("8. Eliminar Nota");
-            System.out.println("9. Volver al menú principal");
+            System.out.println("1. Añadir Alumno ");
+            System.out.println("2. Cargar Alumnos desde TXT");
+            System.out.println("3. Eliminar Alumno");
+            System.out.println("4. Añadir Nota");
+            System.out.println("5. Modificar Nota");
+            System.out.println("6. Eliminar Nota");
+            System.out.println("7. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -126,67 +125,100 @@ public class App {
             switch (opcionSubMenu) {
                 case "1":
                     System.out.println("Inserta Nombre alumno: ");
-                    String nombre = sr.nextLine();
+                    String nombre = sr.nextLine().trim();
                     System.out.println("Inserta Apellidos alumno: ");
-                    String apellidos = sr.nextLine();
+                    String apellidos = sr.nextLine().trim();
                     System.out.println("Inserta número de expediente alumno: ");
-                    String expediente = sr.nextLine();
+                    String expediente = sr.nextLine().trim();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
-                    // 3. Lo añades al "Vaso" (la lista en memoria)
-                    // lista.add(nuevo);
-                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
+                    System.out.println("Alumno añadido a la memoria.");
+                    System.out.println("Guardando cambios en TXT...");
+                    gestor.guardarAlumnos(lista);
+                    System.out.println("Guardado completado.");
                     break;
                 case "2":
-                    // Miras el "Vaso"
-                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
-                    break;
-                case "3":
-                    // Le das el "Vaso" al "Especialista"
-                    System.out.println("Guardando en TXT...");
-                    gestor.guardarAlumnos(lista);
-                    break;
-                case "4":
-                    // Reemplazas el "Vaso"
                     System.out.println("Cargando desde TXT...");
-                    lista = gestor.leerAlumnos();
+                    alumnoService.cargarListaTXT();
+
                     System.out.println("¡Datos cargados desde TXT!");
                     break;
-                case "5":
+                case "3":
                     System.out.println("Elimina alumno por expediente");
-                    String expedienteAEliminar = sr.nextLine();
+                    String expedienteAEliminar = sr.nextLine().trim();
                     // Llama al método y captura el resultado (true/false)
                     boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
                     if (eliminado) {
                         System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
-
+                        try {
+                            gestor.guardarAlumnos(lista); // Guardado
+                            System.out.println("Los cambios se han guardado permanentemente en el archivo TXT.");
+                        } catch (Exception e) {
+                            System.err.println("Error al guardar los cambios en el TXT.");
+                        }
                     } else {
                         System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
                     }
                     break;
-                case "6":
+
+                case "4":
+                    //se añaden todas las notas que se quiera
                     System.out.println("Inserta nota por expediente:");
                     System.out.println("Expediente: ");
-                    expediente = sr.nextLine();
+                    expediente = sr.nextLine().trim();
                     System.out.println("Nota: ");
                     double nota = sr.nextDouble();
                     sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
 
                     try {
                         alumnoService.insertarNota(expediente, nota);
+                        System.out.println("Nota insertada en la memoria. Guardando cambios en TXT...");
+                        gestor.guardarAlumnos(lista);
+                        System.out.println("Cambios guardados en el archivo TXT.");
                     } catch (Exception e) {
                         System.err.println("ERROR al insertar nota: " + e.getMessage());
                         e.printStackTrace();
                     }
                     break;
+
+                case "5":
+                    System.out.println("Ingresa expediente para modificar nota:");
+                    try {
+                        expediente = sr.nextLine().trim();
+                        //Capturamos la lista devuelta por el metodo consultar nota
+                        List<Double> notas = alumnoService.consultarNota(expediente);
+                        //Comprobamos si se encuentran notas y las mostramos si es asi
+                        if (notas == null || notas.isEmpty()) {
+                            System.out.println("Alumno no encontrado o no tiene notas registradas.");
+                            break;
+                        }
+
+                        System.out.println("\nNotas actuales del alumno (Posición | Nota):");
+
+                        // 3. Imprimir la lista con su posición (índice + 1)
+                        for (int i = 0; i < notas.size(); i++) {
+                            System.out.println((i + 1) + " | " + notas.get(i));
+                        }
+                        System.out.println("\nIngresa la posicion de la nota que quieres cambiar");
+                        int pos = sr.nextInt();
+                        sr.nextLine();//Consumir salto de linea
+                        System.out.println("Ingrese la nueva nota:");
+                        double nuevaNota = sr.nextDouble();
+                        sr.nextLine();//Consumir salto de linea
+                        alumnoService.modificarNota(expediente, pos, nuevaNota);
+                        System.out.println("El alumno con el expediente:" + expediente + " tiene una nueva nota: " + nuevaNota);
+
+                    } catch (InputMismatchException e) {
+                        System.err.println("ERROR: La entrada no es un número válido. Inténtalo de nuevo.");
+                        sr.nextLine(); // Limpiar el buffer
+                    } catch (Exception e) {
+                        System.err.println("ERROR al modificar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "6":
+                    //Eliminar nota
                 case "7":
-
-                    break;
-                case "8":
-
-                    break;
-
-                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -204,15 +236,13 @@ public class App {
 
         do {
             System.out.println("\n--- MODO XML ---");
-            System.out.println("1. Añadir Alumno (a la memoria)");
-            System.out.println("2. Listar Alumnos (de la memoria)");
-            System.out.println("3. Guardar cambios en XML (Almacén)");
-            System.out.println("4. Cargar datos desde XML (Almacén)");
-            System.out.println("5. Eliminar Alumno (Almacén)");
-            System.out.println("6. Añadir Nota");
-            System.out.println("7. Modificar Nota");
-            System.out.println("8. Eliminar Nota");
-            System.out.println("9. Volver al menú principal");
+            System.out.println("1. Añadir Alumno ");
+            System.out.println("2. Cargar Alumnos desde XML");
+            System.out.println("3. Eliminar Alumno");
+            System.out.println("4. Añadir Nota");
+            System.out.println("5. Modificar Nota");
+            System.out.println("6. Eliminar Nota");
+            System.out.println("7. Volver al menú principal");
 
             opcionSubMenu = sr.nextLine().trim();
 
@@ -220,74 +250,115 @@ public class App {
             switch (opcionSubMenu) {
                 case "1":
                     System.out.println("Inserta Nombre alumno: ");
-                    String nombre = sr.nextLine();
+                    String nombre = sr.nextLine().trim();
                     System.out.println("Inserta Apellidos alumno: ");
-                    String apellidos = sr.nextLine();
+                    String apellidos = sr.nextLine().trim();
                     System.out.println("Inserta número de expediente alumno: ");
-                    String expediente = sr.nextLine();
+                    String expediente = sr.nextLine().trim();
                     Alumno alumnoNuevo = new Alumno(expediente, nombre, apellidos);
                     lista.agregarAlumno(alumnoNuevo);
-                    // 3. Lo añades al "Vaso" (la lista en memoria)
-                    // lista.add(nuevo);
-                    System.out.println("Alumno añadido a la memoria. No olvides guardar (Opción 3).");
+                    System.out.println("Alumno añadido a la memoria.");
+                    System.out.println("Guardando cambios en XML...");
+                    gestor.guardarAlumnos(lista);
+                    System.out.println("Guardado completado.");
                     break;
                 case "2":
-                    // Miras el "Vaso"
-                    lista.mostrarAlumnos(); // (Tu metodo de ListaAlumnos)
-                    break;
-                case "3":
-                    // Le das el "Vaso" al "Especialista"
-                    System.out.println("Guardando en XML...");
-                    gestor.guardarAlumnos(lista);
-                    break;
-                case "4":
-                    // Reemplazas el "Vaso"
                     System.out.println("Cargando desde XML...");
+                    //alumnoService.cargarListaXML();
+                    //gestor.leerAlumnos().mostrarAlumnos();
                     lista = gestor.leerAlumnos();
+
+                    // Opcional: Ahora puedes ver la lista que acabas de cargar
+                    lista.mostrarAlumnos();
+
+                    // Y asegúrate de actualizar la lista del servicio para las operaciones (notas)
+                    alumnoService.cargarListaXML(lista);
                     System.out.println("¡Datos cargados desde XML!");
                     break;
-                case "5":
+                case "3":
                     System.out.println("Elimina alumno por expediente");
-                    String expedienteAEliminar = sr.nextLine();
+                    String expedienteAEliminar = sr.nextLine().trim();
                     // Llama al método y captura el resultado (true/false)
                     boolean eliminado = lista.eliminaAlumno(expedienteAEliminar);
                     if (eliminado) {
                         System.out.println("Éxito: Alumno con expediente " + expedienteAEliminar + " eliminado ");
-
+                        try {
+                            gestor.guardarAlumnos(lista); // Guardado
+                            System.out.println("Los cambios se han guardado permanentemente en el archivo TXT.");
+                        } catch (Exception e) {
+                            System.err.println("Error al guardar los cambios en el TXT.");
+                        }
                     } else {
                         System.out.println("Error: No se encontró ningún alumno con el expediente " + expedienteAEliminar + " en la memoria.");
                     }
                     break;
-                case "6":
+
+                case "4":
+                    //se añaden todas las notas que se quiera
                     System.out.println("Inserta nota por expediente:");
                     System.out.println("Expediente: ");
-                    expediente = sr.nextLine();
+                    expediente = sr.nextLine().trim();
                     System.out.println("Nota: ");
                     double nota = sr.nextDouble();
                     sr.nextLine(); // NECESARIO: Consumir el salto de línea pendiente después de nextDouble()/nextInt()
 
                     try {
                         alumnoService.insertarNota(expediente, nota);
+                        System.out.println("Nota insertada en la memoria. Guardando cambios en XML...");
+                        lista.mostrarAlumnos();
+                        gestor.guardarAlumnos(lista);
+                        System.out.println("Cambios guardados en el archivo XML.");
                     } catch (Exception e) {
                         System.err.println("ERROR al insertar nota: " + e.getMessage());
                         e.printStackTrace();
                     }
                     break;
+
+                case "5":
+                    System.out.println("Ingresa expediente para modificar nota:");
+                    try {
+                        expediente = sr.nextLine().trim();
+                        //Capturamos la lista devuelta por el metodo consultar nota
+                        List<Double> notas = alumnoService.consultarNota(expediente);
+                        //Comprobamos si se encuentran notas y las mostramos si es asi
+                        if (notas == null || notas.isEmpty()) {
+                            System.out.println("Alumno no encontrado o no tiene notas registradas.");
+                            break;
+                        }
+
+                        System.out.println("\nNotas actuales del alumno (Posición | Nota):");
+
+                        // 3. Imprimir la lista con su posición (índice + 1)
+                        for (int i = 0; i < notas.size(); i++) {
+                            System.out.println((i + 1) + " | " + notas.get(i));
+                        }
+                        System.out.println("\nIngresa la posicion de la nota que quieres cambiar");
+                        int pos = sr.nextInt();
+                        sr.nextLine();//Consumir salto de linea
+                        System.out.println("Ingrese la nueva nota:");
+                        double nuevaNota = sr.nextDouble();
+                        sr.nextLine();//Consumir salto de linea
+                        alumnoService.modificarNota(expediente, pos, nuevaNota);
+                        System.out.println("El alumno con el expediente:" + expediente + " tiene una nueva nota: " + nuevaNota);
+
+                    } catch (InputMismatchException e) {
+                        System.err.println("ERROR: La entrada no es un número válido. Inténtalo de nuevo.");
+                        sr.nextLine(); // Limpiar el buffer
+                    } catch (Exception e) {
+                        System.err.println("ERROR al modificar nota: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                    break;
+                case "6":
+                    //Eliminar nota
                 case "7":
-
-                    break;
-                case "8":
-
-                    break;
-
-                case "9":
                     System.out.println("Volviendo al menú principal...");
                     break;
 
 
             }
 
-        } while (!opcionSubMenu.equals("5"));
+        } while (!opcionSubMenu.equals("7"));
 
         // Devuelve la lista (actualizada o recargada) al Main
         return lista;

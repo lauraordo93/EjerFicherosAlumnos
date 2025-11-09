@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Aula>
+<ListaDeAlumnos>
     <Alumno>
         <apellidos>Ordoñez</apellidos>
-        <expediente>123</expediente>
-        <nombre>Laura</nombre>
-        <notas>9.0</notas>
+        <expediente>222</expediente>
+        <nombre>Carlos</nombre>
+        <Notas>
+            <nota>5.0</nota>
+        </Notas>
     </Alumno>
-</Aula>
+    <Alumno>
+        <apellidos>Alonso</apellidos>
+        <expediente>333</expediente>
+        <nombre>Paula</nombre>
+        <Notas>
+            <nota>8.0</nota>
+        </Notas>
+    </Alumno>
+    <Alumno>
+        <apellidos>Ordoñez</apellidos>
+        <expediente>444</expediente>
+        <nombre>Alex</nombre>
+        <Notas>
+            <nota>9.0</nota>
+        </Notas>
+    </Alumno>
+</ListaDeAlumnos>

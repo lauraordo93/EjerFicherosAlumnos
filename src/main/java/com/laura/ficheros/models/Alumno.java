@@ -1,7 +1,6 @@
 package com.laura.ficheros.models;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.List;
 
 //alumn@ (expediente, nombre y apellidos).
 //LA SERIALIZACION ES EN BINARIO
+@XmlAccessorType(XmlAccessType.PROPERTY)
 @XmlRootElement(name = "Alumno")
 public class Alumno implements Serializable {
     private String expediente;
@@ -16,6 +16,8 @@ public class Alumno implements Serializable {
     private String apellidos;
     private List<Double> notas = new ArrayList<>();
 
+    @XmlElementWrapper(name = "Notas")
+    @XmlElement(name = "nota", type = Double.class)
     public List<Double> getNotas() {
         return notas;
     }
@@ -76,6 +78,7 @@ public class Alumno implements Serializable {
                 "expediente=" + expediente +
                 ", nombre='" + nombre + '\'' +
                 ", apellidos='" + apellidos + '\'' +
+                ", notas='" + notas + '\'' +
                 '}';
     }
 }

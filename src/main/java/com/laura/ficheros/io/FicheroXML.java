@@ -1,5 +1,6 @@
 package com.laura.ficheros.io;
 
+import com.laura.ficheros.models.Alumno;
 import com.laura.ficheros.models.ListaAlumnos;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -29,7 +30,7 @@ public class FicheroXML {
     public ListaAlumnos leerAlumnos(): Defines el metodo,
     que no recibe nada y promete devolver un objeto ListaAlumnos.
     */
-    // "Receta" para leer de TXT (usa FileReader/BufferedReader)
+
     public ListaAlumnos leerAlumnos() {
         //Creamos la lista vacia:
         ListaAlumnos listaleida = new ListaAlumnos();
@@ -39,7 +40,8 @@ public class FicheroXML {
         if (!archivo.exists()) {
             System.out.println("Fichero XML no existe creando....");
             //Guardamos en lista leida
-            guardarAlumnos(listaleida);
+            return listaleida;
+            //guardarAlumnos(listaleida);
         }
         try {
 
@@ -53,12 +55,25 @@ public class FicheroXML {
             JAXBContext context = JAXBContext.newInstance(ListaAlumnos.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             //Convierte el XML archivos en un objeto java
-            listaleida =(ListaAlumnos) unmarshaller.unmarshal(archivo);
+            listaleida = (ListaAlumnos) unmarshaller.unmarshal(archivo);
+            limpiarExpedientesCargados(listaleida);
 
         } catch (JAXBException e) {
             System.out.println("Error" + e.getMessage());
         }
         return listaleida; // (devuelve la lista leída)
 
+    }
+
+    private void limpiarExpedientesCargados(ListaAlumnos lista) {
+        // Esto asegura que el dato almacenado no tiene caracteres invisibles.
+        for (Alumno alumno : lista.getAlumnos()) {
+            String expedienteActual = alumno.getExpediente();
+            if (expedienteActual != null) {
+                // Elimina todos los caracteres de espacio en blanco (\s incluye espacios normales, tabs, etc.)
+                String expedienteLimpio = expedienteActual.replaceAll("\\s+", "").trim();
+                alumno.setExpediente(expedienteLimpio);
+            }
+        }
     }
 }
