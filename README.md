@@ -42,7 +42,7 @@ EjerFicherosAlumnos/
 
 
 - 👨‍🎓 **Gestión de alumnos:**
-  - Alta, modificación y listado  
+  - Alta Alumno, listado todos los Alumnos,Eliminación Alumno, Insertar nota final, modificar nota final.  
   - Almacenamiento persistente en los ficheros
 
 - 🔧 **Configuración flexible:**
