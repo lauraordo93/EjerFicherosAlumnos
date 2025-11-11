@@ -72,6 +72,7 @@ public class Alumno implements Serializable {
         this.apellidos = apellidos;
     }
 
+    /*
     @Override
     public String toString() {
         // Definimos el valor de la nota: si es null (no tiene nota), se escribe vacío.
@@ -85,6 +86,22 @@ public class Alumno implements Serializable {
                 this.nombre,
                 this.apellidos,
                 notaDisplay);
+    }
+
+     */
+    // Alumno.java (Código corregido para compatibilidad con FicheroTXT/CSV)
+    @Override
+    public String toString() {
+        // Definimos el valor de la nota: si es null, se escribe vacío o N/A.
+        // Para TXT/CSV, necesitamos que sea el valor o una cadena vacía para que el split funcione.
+        String notaDisplay = (this.nota != null) ? String.valueOf(this.nota) : ""; // <-- Usa cadena vacía
+
+        // Formato requerido por leerAlumnos: expediente;nombre;apellidos;nota
+        return String.format("%s;%s;%s;%s",
+                this.expediente,
+                this.nombre,
+                this.apellidos,
+                notaDisplay); // <--- Cambiar el formato a expediente;nombre;apellidos;nota
     }
 }
 

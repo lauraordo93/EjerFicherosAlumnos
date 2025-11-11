@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ListaDeAlumnos>
     <Alumno>
-        <apellidos>Laura</apellidos>
-        <expediente>123</expediente>
-        <nombre>Ordoñez</nombre>
-        <nota>5.0</nota>
+        <apellidos>de arce</apellidos>
+        <expediente>222</expediente>
+        <nombre>Mila</nombre>
     </Alumno>
 </ListaDeAlumnos>
