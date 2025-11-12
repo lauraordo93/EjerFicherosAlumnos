@@ -1,6 +1,6 @@
-# 🧮 EjerFicherosAlumnos en desarrollo..
+# 🧮 Ejercicio multiples Ficheros (Alumnos y notas)
 
-**Ejercicio práctico de lectura y escritura de ficheros en Java**, en desarrollo como parte del Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).
+**Ejercicio práctico de lectura y escritura de ficheros en Java**,desarrollado como parte del Grado Superior de Desarrollo de Aplicaciones Multiplataforma (DAM).
 
 Este proyecto gestiona una lista de alumnos utilizando diferentes tipos de ficheros para almacenar y recuperar la información.
 
@@ -42,7 +42,7 @@ EjerFicherosAlumnos/
 
 
 - 👨‍🎓 **Gestión de alumnos:**
-  - Alta, modificación y listado  
+  - Alta Alumno, listado todos los Alumnos,Eliminación Alumno, Insertar nota final, modificar nota final.  
   - Almacenamiento persistente en los ficheros
 
 - 🔧 **Configuración flexible:**
