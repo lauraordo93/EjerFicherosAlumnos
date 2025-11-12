@@ -72,23 +72,8 @@ public class Alumno implements Serializable {
         this.apellidos = apellidos;
     }
 
-    /*
-    @Override
-    public String toString() {
-        // Definimos el valor de la nota: si es null (no tiene nota), se escribe vacío.
-        // Si la nota es de tipo 'double' primitivo, usa String.valueOf(this.nota).
-        // Si la nota es de tipo 'Double' objeto, verifica si es null.
-        String notaDisplay = (this.nota != null) ? String.valueOf(this.nota) : "N/A";
 
-        // Formato requerido por leerAlumnos: expediente;nombre;apellidos;nota
-        return String.format("Exp: %s | Nombre: %s %s | Nota Final: %s",
-                this.expediente,
-                this.nombre,
-                this.apellidos,
-                notaDisplay);
-    }
 
-     */
     // Alumno.java (Código corregido para compatibilidad con FicheroTXT/CSV)
     @Override
     public String toString() {
@@ -101,7 +86,7 @@ public class Alumno implements Serializable {
                 this.expediente,
                 this.nombre,
                 this.apellidos,
-                notaDisplay); // <--- Cambiar el formato a expediente;nombre;apellidos;nota
+                notaDisplay);
     }
 }
 

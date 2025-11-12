@@ -1,7 +1,8 @@
 [
   {
-    "expediente": "123",
+    "expediente": "111",
     "nombre": "Laura",
-    "apellidos": "Ordoñez"
+    "apellidos": "Ordoñez",
+    "nota": 6.0
   }
 ]

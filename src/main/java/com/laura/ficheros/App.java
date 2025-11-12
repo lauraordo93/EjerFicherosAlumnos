@@ -311,7 +311,7 @@ public class App {
                         System.out.println("Ingrese la nueva nota:");
                         double nuevaNota = sr.nextDouble();
                         sr.nextLine();//Consumir salto de linea
-                        alumnoService.modificarNota(expediente, nuevaNota);
+                        alumnoService.modificarNotaNotex(expediente, nuevaNota);
                         System.out.println("El alumno con el expediente: " + expediente + " tiene una nueva nota: " + nuevaNota);
 
                     } catch (InputMismatchException e) {
@@ -432,7 +432,7 @@ public class App {
                         System.out.println("Ingrese la nueva nota:");
                         double nuevaNota = sr.nextDouble();
                         sr.nextLine();//Consumir salto de linea
-                        alumnoService.modificarNota(expediente, nuevaNota);
+                        alumnoService.modificarNotaNotex(expediente, nuevaNota);
                         System.out.println("El alumno con el expediente: " + expediente + " tiene una nueva nota: " + nuevaNota);
 
                     } catch (InputMismatchException e) {
@@ -552,7 +552,7 @@ public class App {
                         System.out.println("Ingrese la nueva nota:");
                         double nuevaNota = sr.nextDouble();
                         sr.nextLine();//Consumir salto de linea
-                        alumnoService.modificarNota(expediente, nuevaNota);
+                        alumnoService.modificarNotaNotex(expediente, nuevaNota);
                         System.out.println("El alumno con el expediente: " + expediente + " tiene una nueva nota: " + nuevaNota);
 
                     } catch (InputMismatchException e) {

@@ -68,6 +68,38 @@ public class AlumnoServices {
         throw new Exception("No se encontró ningún alumno con el expediente " + expedienteLimpio + " para añadir la nota.");
     }
 
+    public void modificarNotaNotex(String expediente, double nuevaNota) throws Exception {
+        String expedienteLimpio = expediente.trim();
+        boolean notaModificada = false; // Bandera para saber si se modificó
+
+        for (Alumno a : this.lista.getAlumnos()) {
+            if (a.getExpediente().trim().equals(expedienteLimpio)) {
+                if (a.getNota() != null) {
+                    // 1. Modifica el objeto en memoria
+                    a.setNota(nuevaNota);
+                    notaModificada = true;
+                    break; // Salimos del bucle una vez encontrado y modificado
+                } else {
+                    // Este throw está mal ubicado. Debería ser después del bucle.
+                    // Lo mantendremos simple por ahora.
+                    throw new Exception("El alumno no tiene una nota registrada para modificar.");
+                }
+            }
+        }
+
+        // 2. Persistencia: Si la nota fue modificada, guardamos en TODOS los ficheros.
+        if (notaModificada) {
+            System.out.println("Éxito: Nota modificada en memoria. Guardando cambios en archivos...");
+            ficheroBinario.guardarAlumnos(lista);
+            ficheroJson.guardarAlumnos(lista);
+            ficheroXML.guardarAlumnos(lista);
+        } else {
+            // En caso de que el alumno no se encontrara
+            // Nota: Si el throw anterior se dispara, no llegaremos aquí.
+            throw new Exception("Alumno no encontrado o sin nota inicial registrada.");
+        }
+    }
+
     public void modificarNota(String expediente, double nuevaNota) throws Exception {
         // 1. Limpieza de entrada
         String expedienteLimpio = expediente.trim();
@@ -101,11 +133,6 @@ public class AlumnoServices {
         return null;
     }
 
-    public void eliminarNota(String expediente) {
-        String expedienteLimpio = expediente.trim();
-
-
-    }
 
     public void setLista(ListaAlumnos nuevaLista) {
         // 💡 Asegúrate de que esta línea apunta a tu variable interna
